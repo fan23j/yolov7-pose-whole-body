@@ -1,5 +1,6 @@
-# yolov7-pose
-Implementation of "YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors"
+# yolov7-pose-whole-body
+Implementation of "YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors" combined with
+"Whole-Body Human Pose Estimation in the Wild".
 
 Pose estimation implimentation is based on [YOLO-Pose](https://arxiv.org/abs/2204.06806). 
 
@@ -51,5 +52,6 @@ python test.py --data data/coco_kpts.yaml --img 960 --conf 0.001 --iou 0.65 --we
 * [https://github.com/DingXiaoH/RepVGG](https://github.com/DingXiaoH/RepVGG)
 * [https://github.com/JUGGHM/OREPA_CVPR2022](https://github.com/JUGGHM/OREPA_CVPR2022)
 * [https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose](https://github.com/TexasInstruments/edgeai-yolov5/tree/yolo-pose)
+* [https://github.com/jin-s13/COCO-WholeBody](https://github.com/jin-s13/COCO-WholeBody)
 
 </details>
