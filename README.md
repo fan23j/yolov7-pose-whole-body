@@ -9,6 +9,7 @@ Pose estimation implimentation is based on [YOLO-Pose](https://arxiv.org/abs/220
 ## Dataset preparison
 
 [[Keypoints Labels of MS COCO 2017]](https://github.com/WongKinYiu/yolov7/releases/download/v0.1/coco2017labels-keypoints.zip)
+COCO Whole-Body: https://github.com/jin-s13/COCO-WholeBody
 
 ## Training
 
