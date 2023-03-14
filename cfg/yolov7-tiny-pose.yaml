@@ -1,7 +1,9 @@
 # parameters
 nc: 1 # number of classes
+nkpt: 17 # number of keypoints
 depth_multiple: 1.0 # model depth multiple
 width_multiple: 1.0 # layer channel multiple
+dw_conv_kpt: True
 
 # anchors
 anchors:
@@ -109,5 +111,5 @@ head: [
         [65, 1, Conv, [256, 3, 1, None, 1, nn.LeakyReLU(0.1)]],
         [73, 1, Conv, [512, 3, 1, None, 1, nn.LeakyReLU(0.1)]],
 
-        [[74, 75, 76], 1, IDetect, [nc, anchors]], # Detect(P3, P4, P5)
+        [[74, 75, 76], 1, IKeypoint, [nc, anchors, nkpt]], # Detect(P3, P4, P5, P6)
     ]
