@@ -2,6 +2,8 @@
 Implementation of "YOLOv7: Trainable bag-of-freebies sets new state-of-the-art for real-time object detectors" combined with
 "Whole-Body Human Pose Estimation in the Wild".
 
+This repo seeks to combine the aforementioned papers/repos to add extra keypoints to yolo-pose models.
+
 Pose estimation implimentation is based on [YOLO-Pose](https://arxiv.org/abs/2204.06806). 
 
 ## Dataset preparison
