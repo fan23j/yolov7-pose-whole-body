@@ -6,6 +6,7 @@ import os
 import json
 from tqdm import tqdm
 import argparse
+import numpy as np
  
 parser = argparse.ArgumentParser()
 #这里根据自己的json文件位置，换成自己的就行
@@ -16,7 +17,7 @@ parser.add_argument('--split', default='train', type=str,
 help="specify train/val split")
 arg = parser.parse_args()
  
-def convert(size, box):
+def convert(size, box, keypoints):
     dw = 1. / (size[0])
     dh = 1. / (size[1])
     x = box[0] + box[2] / 2.0
@@ -28,7 +29,12 @@ def convert(size, box):
     w = round(w * dw, 6)
     y = round(y * dh, 6)
     h = round(h * dh, 6)
-    return (x, y, w, h)
+    
+    keypoint = keypoints.copy()
+    keypoint[::3] = np.array(keypoint[::3]) / w
+    keypoint[1::3] = np.array(keypoint[1::3]) / h
+    
+    return (x, y, w, h), keypoint
  
 if __name__ == '__main__':
     json_file =   arg.json_path # COCO Object Instance 类型的标注
@@ -58,8 +64,10 @@ if __name__ == '__main__':
         f_txt = open(os.path.join(ana_txt_save_path, ana_txt_name), 'w')
         for ann in data['annotations']:
             if ann['image_id'] == img_id:
-                box = convert((img_width, img_height), ann["bbox"])
-                f_txt.write("%s %s %s %s %s\n" % (id_map[ann["category_id"]], box[0], box[1], box[2], box[3]))
+                box, keypoints = convert((img_width, img_height), ann["bbox"], ann["keypoints"])
+                line = (id_map[ann["category_id"]], *box, *keypoints)
+                #f_txt.write("%s %s %s %s %s\n" % (id_map[ann["category_id"]], box[0], box[1], box[2], box[3]))
+                f_txt.write(('%g ' * len(line)).rstrip() % line + '\n')
         f_txt.close()
         #将图片的相对路径写入train2017或val2017的路径
         list_file.write('./%s/%s.jpg\n' %(split,head))
