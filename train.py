@@ -558,6 +558,7 @@ if __name__ == '__main__':
         if opt.global_rank in [-1, 0]:
             prefix = colorstr('tensorboard: ')
             logger.info(f"{prefix}Start with 'tensorboard --logdir {opt.project}', view at http://localhost:6006/")
+            os.makedirs(opt.save_dir, exist_ok=True) # create directory explicity to avoid SummaryWriter error
             tb_writer = SummaryWriter(opt.save_dir)  # Tensorboard
         train(hyp, opt, device, tb_writer)
 
