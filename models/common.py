@@ -25,6 +25,24 @@ def autopad(k, p=None):  # kernel, padding
     return p
 
 
+class MP(nn.Module):
+    def __init__(self, k=2):
+        super(MP, self).__init__()
+        self.m = nn.MaxPool2d(kernel_size=k, stride=k)
+
+    def forward(self, x):
+        return self.m(x)
+
+
+class SP(nn.Module):
+    def __init__(self, k=3, s=1):
+        super(SP, self).__init__()
+        self.m = nn.MaxPool2d(kernel_size=k, stride=s, padding=k // 2)
+
+    def forward(self, x):
+        return self.m(x)
+
+
 class ImplicitA(nn.Module):
     def __init__(self, channel):
         super(ImplicitA, self).__init__()
