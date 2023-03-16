@@ -87,9 +87,10 @@ class QFocalLoss(nn.Module):
 
 class ComputeLoss:
     # Compute losses
-    def __init__(self, model, autobalance=False, kpt_label=False):
+    def __init__(self, model, autobalance=False, kpt_label=False, nkpt=17):
         super(ComputeLoss, self).__init__()
         self.kpt_label = kpt_label
+        self.nkpt = nkpt
         device = next(model.parameters()).device  # get model device
         h = model.hyp  # hyperparameters
 
@@ -113,10 +114,11 @@ class ComputeLoss:
         for k in 'na', 'nc', 'nl', 'anchors', 'nkpt':
             setattr(self, k, getattr(det, k))
 
-    def __call__(self, p, targets):  # predictions, targets, model
+    def __call__(self, p, targets, nkpt=17):  # predictions, targets, model
         device = targets.device
         lcls, lbox, lobj, lkpt, lkptv = torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device)
         sigmas = torch.tensor([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62, .62, 1.07, 1.07, .87, .87, .89, .89, 1.07, 1.07, 1.07, 1.07, 1.07, 1.07], device=device) / 10.0
+        sigmas = sigmas[:nkpt]
         tcls, tbox, tkpt, indices, anchors = self.build_targets(p, targets)  # targets
 
         # Losses
@@ -179,11 +181,10 @@ class ComputeLoss:
         loss = lbox + lobj + lcls + lkpt + lkptv
         return loss * bs, torch.cat((lbox, lobj, lcls, lkpt, lkptv, loss)).detach()
 
-    def build_targets(self, p, targets):
+    def build_targets(self, p, targets, nkpt=17):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
         na, nt = self.na, targets.shape[0]  # number of anchors, targets
-        gain_range = 53 # hardcoded to num_kpts*2 + 7
-        num_kpts = 23 # hardcoded
+        gain_range = nkpt*2 + 7
         tcls, tbox, tkpt, indices, anch = [], [], [], [], []
         if self.kpt_label:
             #gain = torch.ones(41, device=targets.device)
@@ -202,7 +203,7 @@ class ComputeLoss:
         for i in range(self.nl):
             anchors = self.anchors[i]
             if self.kpt_label:
-                gain[2:gain_range-1] = torch.tensor(p[i].shape)[(num_kpts+2)*[3, 2]]  # xyxy gain
+                gain[2:gain_range-1] = torch.tensor(p[i].shape)[(self.nkpt+2)*[3, 2]]  # xyxy gain
             else:
                 gain[2:6] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain
 
