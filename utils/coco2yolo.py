@@ -14,7 +14,7 @@ parser.add_argument('--save_path', default='coco_kpts/labels/val2017', type=str,
 parser.add_argument('--split', default='train', type=str,
 help="specify train/val split")
 arg = parser.parse_args()
-def convert(size, box, keypoints, width, height):
+def convert(size, box, keypoints):
     dw = 1. / (size[0])
     dh = 1. / (size[1])
     x = box[0] + box[2] / 2.0
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         f_txt = open(os.path.join(ana_txt_save_path, ana_txt_name), 'w')
         for ann in data['annotations']:
             if ann['image_id'] == img_id:
-                box, keypoints = convert((img_width, img_height), ann["bbox"], [ann["keypoints"], ann["foot_kpts"], ann["face_kpts"], ann["lefthand_kpts"], ann["righthand_kpts"]], img_width, img_height)
+                box, keypoints = convert((img_width, img_height), ann["bbox"], [ann["keypoints"], ann["foot_kpts"], ann["face_kpts"], ann["lefthand_kpts"], ann["righthand_kpts"]])
                 line = (id_map[ann["category_id"]], *box, *keypoints)
                 f_txt.write(('%g ' * len(line)).rstrip() % line + '\n')
         f_txt.close()
