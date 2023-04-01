@@ -30,8 +30,8 @@ def convert(size, box, keypoints, width, height):
     # normalize [keypoints, foot_kpts, face_kpts, lefthand_kpts, righthand_kpts]
     for kpt_set in keypoints:
         kpt_set.copy()
-        kpt_set[::3] = np.array(kpt_set[::3]) / width
-        kpt_set[1::3] = np.array(kpt_set[1::3]) / height
+        kpt_set[::3] = np.array(kpt_set[::3]) / w
+        kpt_set[1::3] = np.array(kpt_set[1::3]) / h
         kpt_sets.append(kpt_set)
     return (x, y, w, h), list(np.concatenate(kpt_sets).flat)
 if __name__ == '__main__':
