@@ -99,7 +99,8 @@ def plot_skeleton_kpts(im, kpts, steps, orig_shape=None):
                 [1, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5, 7]]
 
     pose_limb_color = palette[[9, 9, 9, 9, 7, 7, 7, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16, 3, 3, 3, 3, 3, 3]]
-    pose_kpt_color = palette[[16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9, 5, 5, 5, 5, 5, 5]]
+    #pose_kpt_color = palette[[16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9, 5, 5, 5, 5, 5, 5]]
+    pose_kpt_color = palette[[0]*133]
     radius = 5
     num_kpts = len(kpts) // steps
 
@@ -113,20 +114,20 @@ def plot_skeleton_kpts(im, kpts, steps, orig_shape=None):
                     continue
             cv2.circle(im, (int(x_coord), int(y_coord)), radius, (int(r), int(g), int(b)), -1)
 
-    for sk_id, sk in enumerate(skeleton):
-        r, g, b = pose_limb_color[sk_id]
-        pos1 = (int(kpts[(sk[0]-1)*steps]), int(kpts[(sk[0]-1)*steps+1]))
-        pos2 = (int(kpts[(sk[1]-1)*steps]), int(kpts[(sk[1]-1)*steps+1]))
-        if steps == 3:
-            conf1 = kpts[(sk[0]-1)*steps+2]
-            conf2 = kpts[(sk[1]-1)*steps+2]
-            if conf1<0.5 or conf2<0.5:
-                continue
-        if pos1[0]%640 == 0 or pos1[1]%640==0 or pos1[0]<0 or pos1[1]<0:
-            continue
-        if pos2[0] % 640 == 0 or pos2[1] % 640 == 0 or pos2[0]<0 or pos2[1]<0:
-            continue
-        cv2.line(im, pos1, pos2, (int(r), int(g), int(b)), thickness=2)
+    # for sk_id, sk in enumerate(skeleton):
+    #     r, g, b = pose_limb_color[sk_id]
+    #     pos1 = (int(kpts[(sk[0]-1)*steps]), int(kpts[(sk[0]-1)*steps+1]))
+    #     pos2 = (int(kpts[(sk[1]-1)*steps]), int(kpts[(sk[1]-1)*steps+1]))
+    #     if steps == 3:
+    #         conf1 = kpts[(sk[0]-1)*steps+2]
+    #         conf2 = kpts[(sk[1]-1)*steps+2]
+    #         if conf1<0.5 or conf2<0.5:
+    #             continue
+    #     if pos1[0]%640 == 0 or pos1[1]%640==0 or pos1[0]<0 or pos1[1]<0:
+    #         continue
+    #     if pos2[0] % 640 == 0 or pos2[1] % 640 == 0 or pos2[0]<0 or pos2[1]<0:
+    #         continue
+    #     cv2.line(im, pos1, pos2, (int(r), int(g), int(b)), thickness=2)
 
 
 def plot_one_box_PIL(box, im, color=None, label=None, line_thickness=None):
