@@ -136,7 +136,7 @@ def test(data,
 
             # Compute loss
             if compute_loss:
-                loss += compute_loss([x.float() for x in train_out], targets)[1][:3]  # box, obj, cls
+                loss += compute_loss([x.float() for x in train_out], targets, 133)[1][:3]  # box, obj, cls
 
             # Run NMS
             if kpt_label:
