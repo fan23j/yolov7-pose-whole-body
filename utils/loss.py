@@ -117,9 +117,9 @@ class ComputeLoss:
     def __call__(self, p, targets, nkpt=17):  # predictions, targets, model
         device = targets.device
         lcls, lbox, lobj, lkpt, lkptv = torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device)
-        sigmas = torch.tensor([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62, .62, 1.07, 1.07, .87, .87, .89, .89, 1.07, 1.07, 1.07, 1.07, 1.07, 1.07], device=device) / 10.0
+        sigmas = torch.tensor([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62,.62, 1.07, 1.07, .87, .87, .89, .89, .89, .89, .89, .89, .89, .89, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15,                         .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15,                         .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15, .15], device=device) / 10.0
         sigmas = sigmas[:nkpt]
-        tcls, tbox, tkpt, indices, anchors = self.build_targets(p, targets)  # targets
+        tcls, tbox, tkpt, indices, anchors = self.build_targets(p, targets, nkpt)  # targets
 
         # Losses
         for i, pi in enumerate(p):  # layer index, layer predictions
