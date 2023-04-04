@@ -6,7 +6,10 @@ This repo seeks to combine the aforementioned papers/repos to add extra keypoint
 
 Pose estimation implimentation is based on [YOLO-Pose](https://arxiv.org/abs/2204.06806). 
 
-## Dataset preparison
+## Pretrained models
+[yolov7-tiny-baseline](https://drive.google.com/drive/folders/1AeTLrF3eXqneobwk6lJoTU5lzThrvf9A?usp=share_link)
+
+## Dataset preparation
 
 [[Keypoints Labels of MS COCO 2017]](https://github.com/WongKinYiu/yolov7/releases/download/v0.1/coco2017labels-keypoints.zip)
 
