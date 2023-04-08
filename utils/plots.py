@@ -110,7 +110,7 @@ def plot_skeleton_kpts(im, kpts, steps, orig_shape=None):
         if not (x_coord % 640 == 0 or y_coord % 640 == 0):
             if steps == 3:
                 conf = kpts[steps * kid + 2]
-                if conf < 0.5:
+                if conf < 0.1:
                     continue
             cv2.circle(im, (int(x_coord), int(y_coord)), radius, (int(r), int(g), int(b)), -1)
 
