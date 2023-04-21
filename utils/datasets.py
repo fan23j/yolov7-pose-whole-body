@@ -374,7 +374,6 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
 		101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]
         self.nkpt = nkpt
         self.flip_index = self.flip_index[:nkpt]
-        #self.flip_index = [0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15]
 
 
 
@@ -508,22 +507,25 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                     if len(l):
                         assert (l >= 0).all(), 'negative labels'
                         if kpt_label:
-                            assert l.shape[1] == 56 or l.shape[1] == 74, 'labels require 56 or 74 columns each'
+                            #assert l.shape[1] == 56 or l.shape[1] == 74, 'labels require 56 or 74 columns each'
+			    assert l.shape[1] == nkpt * 3 + 5, 'labels require (nkpt * 3 + 5) columns each'
                             assert (l[:, 5::3] <= 1).all(), 'non-normalized or out of bounds coordinate labels'
                             assert (l[:, 6::3] <= 1).all(), 'non-normalized or out of bounds coordinate labels'
                             # print("l shape", l.shape)
-                            if l.shape[1] == 56:
-                                kpts = np.zeros((l.shape[0], 39))
-                                kpts_cast = 39
-                            else:
-                                kpts = np.zeros((l.shape[0], 51))
-                                kpts_cast = 51
+#                             if l.shape[1] == 56:
+#                                 kpts = np.zeros((l.shape[0], 39))
+#                                 kpts_cast = 39
+#                             else:
+#                                 kpts = np.zeros((l.shape[0], 51))
+#                                 kpts_cast = 51
+			    _cast = nkpt * 2 + 5
+			    kpts = np.zeros((l.shape[0], _cast) 
 
                             for i in range(len(l)):
                                 kpt = np.delete(l[i,5:], np.arange(2, l.shape[1]-5, 3))  #remove the occlusion paramater from the GT
                                 kpts[i] = np.hstack((l[i, :5], kpt))
                             l = kpts
-                            assert l.shape[1] == 39 or l.shape[1] == 51, 'labels require 39 or 51 columns each after removing occlusion parameter'
+                            assert l.shape[1] == _cast, 'labels require (nkpt * 2 + 5) columns each after removing occlusion parameter'
                         else:
                             assert l.shape[1] == 5, 'labels require 5 columns each'
                             assert (l[:, 1:5] <= 1).all(), 'non-normalized or out of bounds coordinate labels'
