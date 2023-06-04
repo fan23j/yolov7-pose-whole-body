@@ -364,14 +364,14 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
         self.path = path
         self.kpt_label = kpt_label
         self.flip_index = [
-		0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15, 20, 21, 22,
-		17, 18, 19, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25,
-		24, 23, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 50, 51, 52, 53, 58, 57,
-		56, 55, 54, 68, 67, 66, 65, 70, 69, 62, 61, 60, 59, 64, 63, 77, 76, 75,
-		74, 73, 72, 71, 82, 81, 80, 79, 78, 87, 86, 85, 84, 83, 90, 89, 88, 112,
-		113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126,
-		127, 128, 129, 130, 131, 132, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
-		101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]
+        0, 2, 1, 4, 3, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16, 15, 20, 21, 22,
+        17, 18, 19, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25,
+        24, 23, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 50, 51, 52, 53, 58, 57,
+        56, 55, 54, 68, 67, 66, 65, 70, 69, 62, 61, 60, 59, 64, 63, 77, 76, 75,
+        74, 73, 72, 71, 82, 81, 80, 79, 78, 87, 86, 85, 84, 83, 90, 89, 88, 112,
+        113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126,
+        127, 128, 129, 130, 131, 132, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,
+        101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111]
         self.nkpt = nkpt
         self.flip_index = self.flip_index[:nkpt]
 
@@ -435,7 +435,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                 x[:, 0] = 0
 
         n = len(shapes)  # number of images
-        bi = np.floor(np.arange(n) / batch_size).astype(np.int)  # batch index
+        bi = np.floor(np.arange(n) / batch_size).astype(np.int_)  # batch index
         nb = bi[-1] + 1  # number of batches
         self.batch = bi  # batch index of image
         self.n = n
@@ -508,7 +508,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                         assert (l >= 0).all(), 'negative labels'
                         if kpt_label:
                             #assert l.shape[1] == 56 or l.shape[1] == 74, 'labels require 56 or 74 columns each'
-			    assert l.shape[1] == nkpt * 3 + 5, 'labels require (nkpt * 3 + 5) columns each'
+                            assert l.shape[1] == self.nkpt * 3 + 5, 'labels require (nkpt * 3 + 5) columns each'
                             assert (l[:, 5::3] <= 1).all(), 'non-normalized or out of bounds coordinate labels'
                             assert (l[:, 6::3] <= 1).all(), 'non-normalized or out of bounds coordinate labels'
                             # print("l shape", l.shape)
@@ -518,14 +518,14 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
 #                             else:
 #                                 kpts = np.zeros((l.shape[0], 51))
 #                                 kpts_cast = 51
-			    _cast = nkpt * 2 + 5
-			    kpts = np.zeros((l.shape[0], _cast) 
+                            kpts_cast = self.nkpt * 2 + 5
+                            kpts = np.zeros((l.shape[0], kpts_cast))
 
                             for i in range(len(l)):
                                 kpt = np.delete(l[i,5:], np.arange(2, l.shape[1]-5, 3))  #remove the occlusion paramater from the GT
                                 kpts[i] = np.hstack((l[i, :5], kpt))
                             l = kpts
-                            assert l.shape[1] == _cast, 'labels require (nkpt * 2 + 5) columns each after removing occlusion parameter'
+                            assert l.shape[1] == kpts_cast, 'labels require (nkpt * 2 + 5) columns each after removing occlusion parameter'
                         else:
                             assert l.shape[1] == 5, 'labels require 5 columns each'
                             assert (l[:, 1:5] <= 1).all(), 'non-normalized or out of bounds coordinate labels'

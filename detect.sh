@@ -1,0 +1,1 @@
+pudb detect.py --weights yolov7-tiny-baseline.pt --source onnx_inference/img.png --save-crop --save-txt --kpt-label
