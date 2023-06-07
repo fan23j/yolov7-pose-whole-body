@@ -77,7 +77,7 @@ def detect(opt):
         pred = model(img, augment=opt.augment)[0]
         print(pred[...,4].max())
         # Apply NMS
-        pred = non_max_suppression(pred, opt.conf_thres, opt.iou_thres, classes=opt.classes, agnostic=opt.agnostic_nms, kpt_label=kpt_label)
+        pred = non_max_suppression(pred, opt.conf_thres, opt.iou_thres, classes=opt.classes, agnostic=opt.agnostic_nms, kpt_label=kpt_label, nkpt=opt.nkpt)
         t2 = time_synchronized()
 
         # Apply Classifier
@@ -191,6 +191,7 @@ if __name__ == '__main__':
     parser.add_argument('--hide-labels', default=False, action='store_true', help='hide labels')
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--kpt-label', action='store_true', help='use keypoint labels')
+    parser.add_argument('--nkpt', type=int, default=17, help='number of keypoints for training')
     opt = parser.parse_args()
     print(opt)
     # check_requirements(exclude=('tensorboard', 'pycocotools', 'thop'))

@@ -381,27 +381,29 @@ class NMS(nn.Module):
     iou = 0.45  # IoU threshold
     classes = None  # (optional list) filter by class
 
-    def __init__(self, conf=0.25, kpt_label=False):
+    def __init__(self, conf=0.25, kpt_label=False, nkpt=17):
         super(NMS, self).__init__()
         self.conf=conf
         self.kpt_label = kpt_label
+        self.nkpt = nkpt
 
 
     def forward(self, x):
-        return non_max_suppression(x[0], conf_thres=self.conf, iou_thres=self.iou, classes=self.classes, kpt_label=self.kpt_label)
+        return non_max_suppression(x[0], conf_thres=self.conf, iou_thres=self.iou, classes=self.classes, kpt_label=self.kpt_label, nkpt=self.nkpt)
 
 class NMS_Export(nn.Module):
     # Non-Maximum Suppression (NMS) module used while exporting ONNX model
     iou = 0.45  # IoU threshold
     classes = None  # (optional list) filter by class
 
-    def __init__(self, conf=0.001, kpt_label=False):
+    def __init__(self, conf=0.001, kpt_label=False, nkpt=17):
         super(NMS_Export, self).__init__()
         self.conf = conf
         self.kpt_label = kpt_label
+        self.nkpt = nkpt
 
     def forward(self, x):
-        return non_max_suppression_export(x[0], conf_thres=self.conf, iou_thres=self.iou, classes=self.classes, kpt_label=self.kpt_label)
+        return non_max_suppression_export(x[0], conf_thres=self.conf, iou_thres=self.iou, classes=self.classes, kpt_label=self.kpt_label, nkpt=self.nkpt)
 
 
 
