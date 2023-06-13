@@ -7,10 +7,10 @@ This repo seeks to combine the aforementioned papers/repos to add extra keypoint
 Pose estimation implimentation is based on [YOLO-Pose](https://arxiv.org/abs/2204.06806). 
 
 ## Pretrained models
-[yolov7-tiny-baseline](https://drive.google.com/drive/folders/1AeTLrF3eXqneobwk6lJoTU5lzThrvf9A?usp=share_link)
+[yolov7-tiny-pose](https://drive.google.com/drive/folders/14-k2wyG0P00PHlXbjGGG7IZjiq8vBQIy?usp=sharing)
 
 ``` shell
-python train.py --data data/coco_kpts.yaml --cfg cfg/yolov7-tiny-pose.yaml --batch-size 512 --img 256 --kpt-label --sync-bn --device 0  --hyp data/hyp.pose.yaml --nkpt 133 --weights PATH_TO_PRETRAINED_WEIGHTS epochs 500
+python train.py --data data/coco_kpts.yaml --cfg cfg/yolov7-tiny-pose.yaml --batch-size 64 --img 640 --kpt-label --sync-bn --device 0  --hyp data/hyp.pose.yaml --nkpt 133 --weights PATH_TO_PRETRAINED_WEIGHTS epochs 500
 ```
 ## Dataset preparation
 
